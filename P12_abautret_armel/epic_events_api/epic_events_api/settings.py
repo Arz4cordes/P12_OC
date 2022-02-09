@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'connection',
     'api_use',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
@@ -72,24 +73,34 @@ TEMPLATES = [
 WSGI_APPLICATION = 'epic_events_api.wsgi.application'
 
 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+         'rest_framework.permissions.IsAuthenticated',
+         'rest_framework.permissions.IsAdminUser',
+         ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 5,
+}
+
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'DATABASE_NAME',
-        'USER': 'DATABASE_USERNAME',
-        'PASSWORD': 'DATABASE_PASSWORD',
+        'NAME': 'Epic_Events',
+        'USER': 'epic_events_admin',
+        'PASSWORD': 'OC_P12',
         'HOST': '127.0.0.1',
         'PORT': '5432'
-
     }
 }
 
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
+
+AUTH_USER_MODEL = 'connection.User'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -122,7 +133,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
