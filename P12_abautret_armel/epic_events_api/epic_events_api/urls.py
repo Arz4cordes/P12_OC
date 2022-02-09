@@ -14,8 +14,22 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from rest_framework import routers
+from epic_events_api import views as api_views
+
+cli_router = routers.SimpleRouter()
+cli_router.register('client', api_views.ClientViewSet, basename='client')
+
+ctr_router = routers.SimpleRouter()
+ctr_router.register('contract', api_views.ContractViewSet, basename='contract')
+
+evt_router = routers.SimpleRouter()
+evt_router.register('event', api_views.EventViewSet, basename='event')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include(cli_router.urls)),
+    path('', include(ctr_router.urls)),
+    path('', include(evt_router.urls)),
 ]
