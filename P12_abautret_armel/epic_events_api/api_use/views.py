@@ -1,7 +1,7 @@
-from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import permissions
-from .serializers import ClientSerializer, ContractSerializer, EventSerializer
+from api_use.serializers import ClientSerializer, ContractSerializer, EventSerializer
+from api_use.models import Client, Contract, Event
 # Create your views here.
 
 
@@ -15,14 +15,17 @@ class ClientViewSet(ModelViewSet):
     or delete one client
     """
     serializer_class = ClientSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self):
+        return Client.objects.all()
 
 
 class ContractViewSet(ModelViewSet):
     """
     With this Class Based View, you can:
     view the list of all contracts,
-    create a new contrac,
+    create a new contract,
     view one particular contract,
     update one contract
     or delete one contract

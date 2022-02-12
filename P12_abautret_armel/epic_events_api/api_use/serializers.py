@@ -1,15 +1,15 @@
 from rest_framework import serializers
-from .models import Client, Contract, Event
+from api_use.models import Client, Contract, Event
 
 class ClientSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Client
-        fields = ['firt_name', 'last_name', 'email', 'phone1', 'phone2',
-                  'company', 'creation_date', 'update', 'responsible_email']
+        fields = ['first_name', 'last_name', 'email', 'phone1', 'phone2',
+                  'company', 'creation_date', 'update', 'responsible']
 
 
-class ContractViewSet(serializers.ModelSerializer):
+class ContractSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Contract
@@ -17,7 +17,7 @@ class ContractViewSet(serializers.ModelSerializer):
                   'total_amount', 'client']
 
 
-class EventViewSet(serializers.ModelSerializer):
+class EventSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Event

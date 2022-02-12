@@ -1,5 +1,5 @@
 from rest_framework.permissions import BasePermission
-from .models import Client, Contract, Event
+from api_use.models import Contract, Event
 
 
 """

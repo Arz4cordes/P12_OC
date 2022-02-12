@@ -16,7 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from epic_events_api import views as api_views
+from api_use import views as api_views
+from connection import views as connect_views
+
 
 cli_router = routers.SimpleRouter()
 cli_router.register('client', api_views.ClientViewSet, basename='client')
@@ -29,6 +31,8 @@ evt_router.register('event', api_views.EventViewSet, basename='event')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('login/', connect_views.ConnectionView.as_view(), name='login'),
+    path('api-auth/', include('rest_framework.urls')),
     path('', include(cli_router.urls)),
     path('', include(ctr_router.urls)),
     path('', include(evt_router.urls)),

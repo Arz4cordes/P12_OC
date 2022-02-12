@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'connection',
     'api_use',
-    'rest_framework'
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -101,6 +101,8 @@ DATABASES = {
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
 AUTH_USER_MODEL = 'connection.User'
+
+LOGIN_REDIRECT_URL = 'client'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
