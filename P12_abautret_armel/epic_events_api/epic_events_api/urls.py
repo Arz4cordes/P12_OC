@@ -31,8 +31,8 @@ evt_router.register('event', api_views.EventViewSet, basename='event')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('login/', connect_views.ConnectionView.as_view(), name='login'),
-    path('api-auth/', include('rest_framework.urls')),
+    path('', include('rest_framework.urls')),
+    path('home/', connect_views.HomeAPIView.as_view(), name='home'),
     path('', include(cli_router.urls)),
     path('', include(ctr_router.urls)),
     path('', include(evt_router.urls)),

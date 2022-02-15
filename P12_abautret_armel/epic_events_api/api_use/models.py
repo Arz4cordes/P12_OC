@@ -7,21 +7,21 @@ class Client(models.Model):
     first_name = models.CharField(max_length=64, blank=False)
     last_name = models.CharField(max_length=64, blank=False)
     email = models.EmailField(max_length=256, blank=False)
-    phone1 = models.PositiveBigIntegerField
-    phone2 = models.PositiveBigIntegerField
-    company = models.CharField(max_length=128)
+    phone1 = models.PositiveBigIntegerField(default=0)
+    phone2 = models.PositiveBigIntegerField(default=0)
+    company = models.CharField(max_length=128, blank=True)
     active = models.BooleanField(default=False)
     creation_date = models.DateTimeField(auto_now_add=True)
-    update = models.DateTimeField
+    update = models.DateTimeField(null=True)
     responsible = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
 
 class Contract(models.Model):
     creation_date = models.DateTimeField(auto_now_add=True)
-    update = models.DateTimeField
+    update = models.DateTimeField(null=True)
     signed = models.BooleanField(default=False)
-    signature_date = models.DateTimeField
-    total_amount = models.PositiveBigIntegerField
+    signature_date = models.DateTimeField(null=True)
+    total_amount = models.PositiveBigIntegerField(default=0)
     client = models.ForeignKey(to=Client, on_delete=models.CASCADE)
 
 
@@ -31,8 +31,8 @@ class Event(models.Model):
         ('DONE', 'Finished')
     ]
 
-    date = models.DateTimeField
+    date = models.DateTimeField(null=True)
     status = models.CharField(max_length=64, choices=EVENT_STATUS)
-    comments = models.TextField(max_length=500000)
+    comments = models.TextField(max_length=500000, blank=True)
     responsible = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     contract = models.ForeignKey(to=Contract, on_delete=models.CASCADE)

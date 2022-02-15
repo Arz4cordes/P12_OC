@@ -2,6 +2,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework import permissions
 from api_use.serializers import ClientSerializer, ContractSerializer, EventSerializer
 from api_use.models import Client, Contract, Event
+from api_use.permissions import CanViewClients, CanViewContracts, CanViewEvents
 # Create your views here.
 
 
@@ -15,7 +16,8 @@ class ClientViewSet(ModelViewSet):
     or delete one client
     """
     serializer_class = ClientSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated,
+                          CanViewClients]
 
     def get_queryset(self):
         return Client.objects.all()
@@ -31,7 +33,8 @@ class ContractViewSet(ModelViewSet):
     or delete one contract
     """
     serializer_class = ContractSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated,
+                          CanViewContracts]
 
 
 class EventViewSet(ModelViewSet):
@@ -44,4 +47,5 @@ class EventViewSet(ModelViewSet):
     or delete one event
     """
     serializer_class = EventSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated,
+                          CanViewEvents]

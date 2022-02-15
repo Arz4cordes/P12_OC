@@ -102,7 +102,7 @@ DATABASES = {
 
 AUTH_USER_MODEL = 'connection.User'
 
-LOGIN_REDIRECT_URL = 'client'
+LOGIN_REDIRECT_URL = 'home'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
