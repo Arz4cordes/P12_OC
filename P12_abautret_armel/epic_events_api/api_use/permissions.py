@@ -30,54 +30,68 @@ LISTE AUTORISATIONS:
 class CanViewClients(BasePermission):
 
     def has_permission(self, request, view):
-        if request.method in ["POST", "GET"]:
+        if request.method in ["POST", "GET", "PUT"]:
             roles = ['Commercial', 'Management']
             return request.user.assignement in roles
+        else:
+            return request.user.assignement == "Management"
     
     def has_object_permission(self, request, view, obj):
         cond1 = request.user.assignement == "Management"
         if request.method == "DELETE":
             return cond1
         elif request.method == "PUT":
-            cond2 = obj.responsible == request.user.pk
+            cond2 = obj.responsible.pk == request.user.pk
             cond3 = request.user.assignement == "Commercial"
             return cond1 or (cond2 and cond3)
-        else:
+        elif request.method == "GET":
             cond4 = request.user.assignement in ['Management', 'Commercial']
             contracts = Contract.objects.filter(client=obj.pk)
             events = Event.objects.filter(contract__in=contracts,
                                           responsible=request.user)
             cond5 = events.exists()
             return cond4 or cond5
+        else:
+            # FAUT IL METTRE LE CAS POST ICI COMME DANS HAS_PERMISSION ?
+            return False
+
 
 class CanViewContracts(BasePermission):
 
     def has_permission(self, request, view):
-        if request.method in ["GET", "POST"]:
+        if request.method in ["GET", "POST", "PUT"]:
             roles = ['Commercial', 'Management']
             return request.user.assignement in roles
+        else:
+            return request.user.assignement == "Management"
        
     def has_object_permission(self, request, view, obj):
         cond1 = request.user.assignement == "Management"
         if request.method == "DELETE":
             return cond1
         elif request.method == "PUT":
-            cond2 = obj.responsible == request.user.pk
+            cond2 = obj.responsible.pk == request.user.pk
             cond3 = request.user.assignement == "Commercial"
             return cond1 or (cond2 and cond3)
-        else:
+        elif request.method == "GET":
             cond4 = request.user.assignement in ['Management', 'Commercial']
             events = Event.objects.filter(contract=obj.pk,
                                           responsible=request.user)
             cond5 = events.exists()
             return cond4 or cond5
+        else:
+            # FAUT IL METTRE LE CAS POST ICI COMME DANS HAS_PERMISSION ?
+            return False
 
 class CanViewEvents(BasePermission):
 
     def has_permission(self, request, view):
         if request.method in ["GET", "POST"]:
-            roles = ['Commercial', 'Management']
-            return request.user.assignement in roles
+            return request.user.assignement in ['Commercial', 'Management']
+        elif request.method == "PUT":
+            return request.user.assignement in ['Commercial', 'Management']
+        else:
+            return request.user.assignement == "Management"
 
     def has_object_permission(self, request, view, obj):
         cond1 = request.user.assignement == "Management"
@@ -86,7 +100,10 @@ class CanViewEvents(BasePermission):
             return cond1
         elif request.method == "PUT":
             return cond1 or cond2
-        else:
+        elif request.method == "GET":
             roles = ['Commercial', 'Management']
             cond3 = request.user.assignement in roles
             return cond2 or cond3
+        else:
+            # FAUT IL METTRE LE CAS POST ICI COMME DANS HAS_PERMISSION ?
+            return False
