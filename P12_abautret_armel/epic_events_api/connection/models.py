@@ -20,19 +20,20 @@ class MyUserManager(UserManager):
                           assignement=assignement)
         my_user.is_superuser = False
         my_user.is_active = True
-        if my_user.assignement == "Management":
+        if my_user.assignement == 'Management':
             my_user.is_staff = True
+            my_user.is_superuser = True
         else:
             my_user.is_staff = False
         my_user.set_password(password)
         my_user.save(using=self._db)
-        if assignement == "Commercial":
+        if assignement == 'Commercial':
             commercial_group, created = Group.objects.get_or_create(name ='Commercial')
             my_user.groups.add(commercial_group)
-        elif assignement == "Support":
+        elif assignement == 'Support':
             support_group, created = Group.objects.get_or_create(name ='Support')
             my_user.groups.add(support_group)
-        elif assignement == "Management":
+        elif assignement == 'Management':
             management_group, created = Group.objects.get_or_create(name ='Management')
             my_user.groups.add(management_group)
         return my_user

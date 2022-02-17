@@ -34,6 +34,13 @@ class UserCreationForm(forms.ModelForm):
         # Save the provided password in hashed format
         user = super().save(commit=False)
         user.set_password(self.cleaned_data["password1"])
+        user.is_active = True
+        if user.assignement == 'Management':
+            user.is_staff = True
+            user.is_superuser = True
+        else:
+            user.is_staff = False
+            user.is_superuser = False
         if commit:
             user.save()
         return user
@@ -89,7 +96,7 @@ class UserAdmin(BaseUserAdmin):
                        'password2'),
         }),
     )
-    search_fields = ('username', 'email', 'last_name')
+    search_fields = ('username', 'email', 'first_name', 'last_name')
     ordering = ('email',)
     filter_horizontal = ()
 

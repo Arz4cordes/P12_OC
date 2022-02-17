@@ -70,7 +70,9 @@ class CanViewContracts(BasePermission):
         if request.method == "DELETE":
             return cond1
         elif request.method == "PUT":
-            cond2 = obj.responsible.pk == request.user.pk
+            the_client = obj.client
+            responsible_for_client = the_client.responsible
+            cond2 = responsible_for_client == request.user
             cond3 = request.user.assignement == "Commercial"
             return cond1 or (cond2 and cond3)
         elif request.method == "GET":
