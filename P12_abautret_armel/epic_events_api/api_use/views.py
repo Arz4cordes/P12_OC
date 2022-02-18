@@ -1,7 +1,13 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import permissions
 from rest_framework.response import Response
-from api_use.serializers import ClientSerializer, ContractSerializer, EventSerializer
+from api_use.serializers import ClientListSerializer, \
+                                ClientDetailSerializer, \
+                                ContractListSerializer, \
+                                ContractDetailSerializer, \
+                                EventListSerializer, \
+                                EventDetailSerializer
+                             
 from api_use.models import Client, Contract, Event
 from api_use.permissions import CanViewClients, CanViewContracts, CanViewEvents
 # Create your views here.
@@ -16,14 +22,23 @@ from api_use.permissions import CanViewClients, CanViewContracts, CanViewEvents
     """
 class ClientViewSet(ModelViewSet):
 
-    serializer_class = ClientSerializer
+    serializer_class = ClientListSerializer
+    detail_serializer_class = ClientDetailSerializer
     permission_classes = [permissions.IsAuthenticated,
                           CanViewClients,
                           ]
     filterset_fields = ['first_name', 'last_name', 'email']
+    lookup_field = 'pk'
+    lookup_url_kwarg = 'pk'
 
     def get_queryset(self):
         return Client.objects.all()
+
+    def get_serializer_class(self):
+        changes_methods = ['POST', 'PUT']
+        if self.action == 'retrieve' or self.request.method in changes_methods:
+            return self.detail_serializer_class
+        return super().get_serializer_class()
 
     def create(self, request, *args, **kwargs):
         request.POST._mutable = True
@@ -51,7 +66,8 @@ class ClientViewSet(ModelViewSet):
     """
 class ContractViewSet(ModelViewSet):
     
-    serializer_class = ContractSerializer
+    serializer_class = ContractListSerializer
+    detail_serializer_class = ContractDetailSerializer
     permission_classes = [permissions.IsAuthenticated,
                           CanViewContracts,
                           ]
@@ -60,6 +76,12 @@ class ContractViewSet(ModelViewSet):
 
     def get_queryset(self):
         return Contract.objects.all()
+
+    def get_serializer_class(self):
+        changes_methods = ['POST', 'PUT']
+        if self.action == 'retrieve' or self.request.method in changes_methods:
+            return self.detail_serializer_class
+        return super().get_serializer_class()
 
 
 """
@@ -72,7 +94,8 @@ class ContractViewSet(ModelViewSet):
     """
 class EventViewSet(ModelViewSet):
     
-    serializer_class = EventSerializer
+    serializer_class = EventListSerializer
+    detail_serializer_class = EventDetailSerializer
     permission_classes = [permissions.IsAuthenticated,
                           CanViewEvents,
                           ]
@@ -83,3 +106,9 @@ class EventViewSet(ModelViewSet):
 
     def get_queryset(self):
         return Event.objects.all()
+
+    def get_serializer_class(self):
+        changes_methods = ['POST', 'PUT']
+        if self.action == 'retrieve' or self.request.method in changes_methods:
+            return self.detail_serializer_class
+        return super().get_serializer_class()

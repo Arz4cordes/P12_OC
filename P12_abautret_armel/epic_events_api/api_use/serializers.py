@@ -2,7 +2,16 @@ from django.contrib.auth import authenticate
 from rest_framework import serializers
 from api_use.models import Client, Contract, Event
 
-class ClientSerializer(serializers.ModelSerializer):
+class ClientListSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Client
+        fields = ['pk', 'first_name', 'last_name', 'email',
+                  'company']
+        read_only_fields = ['pk']
+
+
+class ClientDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Client
@@ -11,7 +20,15 @@ class ClientSerializer(serializers.ModelSerializer):
         read_only_fields = ['pk']
 
 
-class ContractSerializer(serializers.ModelSerializer):
+class ContractListSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Contract
+        fields = ['pk', 'creation_date', 'signed', 'client']
+        read_only_fields = ['pk']
+
+
+class ContractDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Contract
@@ -32,7 +49,15 @@ class ContractSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(text)
 
 
-class EventSerializer(serializers.ModelSerializer):
+class EventListSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Event
+        fields = ['pk', 'date', 'status', 'contract']
+        read_only_fields = ['pk', 'status', 'responsible']
+
+
+class EventDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Event
