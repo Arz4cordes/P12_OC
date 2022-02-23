@@ -1,6 +1,6 @@
 from django.contrib import admin
-from api_use.models import Client, Contract, Event
-# Register your models here.
+from api_use.models import Client
+from api_contract.models import Contract
 
 
 class ContractInLine(admin.TabularInline):
@@ -15,14 +15,3 @@ class ClientAdmin(admin.ModelAdmin):
     inlines = [
         ContractInLine,
     ]
-
-@admin.register(Contract)
-class ContractAdmin(admin.ModelAdmin):
-    empty_value_display = 'No data'
-    list_display = ('creation_date', 'signed', 'signature_date', 'total_amount', 'client')
-
-
-@admin.register(Event)
-class EventAdmin(admin.ModelAdmin):
-    empty_value_display = 'No data'
-    list_display = ('date', 'status', 'responsible', 'contract')

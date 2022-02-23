@@ -1,5 +1,6 @@
 from rest_framework.permissions import BasePermission
-from api_use.models import Contract, Event
+from api_contract.models import Contract
+from api_event.models import Event
 
 
 """
@@ -55,57 +56,3 @@ class CanViewClients(BasePermission):
             # FAUT IL METTRE LE CAS POST ICI COMME DANS HAS_PERMISSION ?
             return False
 
-
-class CanViewContracts(BasePermission):
-
-    def has_permission(self, request, view):
-        if request.method in ["GET", "POST", "PUT"]:
-            roles = ['Commercial', 'Management']
-            return request.user.assignement in roles
-        else:
-            return request.user.assignement == "Management"
-       
-    def has_object_permission(self, request, view, obj):
-        cond1 = request.user.assignement == "Management"
-        if request.method == "DELETE":
-            return cond1
-        elif request.method == "PUT":
-            the_client = obj.client
-            responsible_for_client = the_client.responsible
-            cond2 = responsible_for_client == request.user
-            cond3 = request.user.assignement == "Commercial"
-            return cond1 or (cond2 and cond3)
-        elif request.method == "GET":
-            cond4 = request.user.assignement in ['Management', 'Commercial']
-            events = Event.objects.filter(contract=obj.pk,
-                                          responsible=request.user)
-            cond5 = events.exists()
-            return cond4 or cond5
-        else:
-            # FAUT IL METTRE LE CAS POST ICI COMME DANS HAS_PERMISSION ?
-            return False
-
-class CanViewEvents(BasePermission):
-
-    def has_permission(self, request, view):
-        if request.method in ["GET", "POST"]:
-            return request.user.assignement in ['Commercial', 'Management']
-        elif request.method == "PUT":
-            return request.user.assignement in ['Commercial', 'Management']
-        else:
-            return request.user.assignement == "Management"
-
-    def has_object_permission(self, request, view, obj):
-        cond1 = request.user.assignement == "Management"
-        cond2 = obj.responsible == request.user
-        if request.method == "DELETE":
-            return cond1
-        elif request.method == "PUT":
-            return cond1 or cond2
-        elif request.method == "GET":
-            roles = ['Commercial', 'Management']
-            cond3 = request.user.assignement in roles
-            return cond2 or cond3
-        else:
-            # FAUT IL METTRE LE CAS POST ICI COMME DANS HAS_PERMISSION ?
-            return False

@@ -16,24 +16,25 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from api_use import views as api_views
+from api_use import views as client_views
+from api_contract import views as contract_views
+from api_event import views as event_views
 from connection import views as connect_views
 
+client_router = routers.SimpleRouter()
+client_router.register('client', client_views.ClientViewSet, basename='client')
 
-cli_router = routers.SimpleRouter()
-cli_router.register('client', api_views.ClientViewSet, basename='client')
-
-ctr_router = routers.SimpleRouter()
-ctr_router.register('contract', api_views.ContractViewSet, basename='contract')
+contract_router = routers.SimpleRouter()
+contract_router.register('contract', contract_views.ContractViewSet, basename='contract')
 
 evt_router = routers.SimpleRouter()
-evt_router.register('event', api_views.EventViewSet, basename='event')
+evt_router.register('event', event_views.EventViewSet, basename='event')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('rest_framework.urls')),
     path('home/', connect_views.HomeAPIView.as_view(), name='home'),
-    path('', include(cli_router.urls)),
-    path('', include(ctr_router.urls)),
+    path('', include(client_router.urls)),
+    path('', include(contract_router.urls)),
     path('', include(evt_router.urls)),
 ]

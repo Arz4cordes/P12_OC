@@ -71,6 +71,7 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=64, blank=False)
     email = models.EmailField(max_length=256, blank=False)
     update = models.DateTimeField(null=True)
+    is_active = models.BooleanField(default=True)
 
     objects = MyUserManager()
 

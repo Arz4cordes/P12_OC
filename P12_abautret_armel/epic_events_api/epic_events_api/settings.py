@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'connection',
     'api_use',
+    'api_contract',
+    'api_event',
     'rest_framework',
     'django_filters',
 ]
@@ -75,6 +77,10 @@ WSGI_APPLICATION = 'epic_events_api.wsgi.application'
 
 
 REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
     'DEFAULT_PERMISSION_CLASSES': [
          'rest_framework.permissions.IsAuthenticated',
          'rest_framework.permissions.IsAdminUser',
@@ -125,9 +131,15 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'fr-FR'
 
-TIME_ZONE = 'UTC'
+DATETIME_INPUT_FORMAT = [
+    '%Y-%m-%d %H:%M',        # '2006-10-25 14:30'
+    '%m/%d/%Y %H:%M',        # '10/25/2006 14:30'
+    '%m/%d/%y %H:%M',        # '10/25/06 14:30'
+]
+
+TIME_ZONE = 'Europe/Paris'
 
 USE_I18N = True
 
