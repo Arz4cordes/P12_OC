@@ -9,11 +9,11 @@ class Contract(models.Model):
     signed = models.BooleanField(default=False)
     signature_date = models.DateTimeField(null=True)
     total_amount = models.PositiveBigIntegerField(default=0)
-    client = models.ForeignKey(to=Client, on_delete=models.CASCADE)
+    client = models.ForeignKey(to=Client, related_name='contracts', on_delete=models.CASCADE)
 
     def __str__(self):
         the_client = self.client
         if the_client:
              return f"Contrat {self.pk} | Client: {the_client.first_name} {the_client.last_name}"
         else:
-            return f"Contrat {self.pk} | Problème: pas de cleint associé !"
+            return f"Contrat {self.pk} | Problème: pas de client associé !"

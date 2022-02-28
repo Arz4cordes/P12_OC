@@ -1,15 +1,15 @@
 from rest_framework import serializers
 from api_contract.models import Contract
 
-class ContractListSerializer(serializers.ModelSerializer):
+class ContractListSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Contract
-        fields = ['pk', 'creation_date', 'signed', 'client']
+        fields = ['pk', 'url', 'creation_date', 'signed', 'client']
         read_only_fields = ['pk']
 
 
-class ContractDetailSerializer(serializers.ModelSerializer):
+class ContractDetailSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Contract
