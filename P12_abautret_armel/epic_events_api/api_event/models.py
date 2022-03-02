@@ -2,7 +2,6 @@ from django.db import models
 from django.conf import settings
 from api_contract.models import Contract
 
-# Create your models here.
 
 class Event(models.Model):
     EVENT_STATUS = [

@@ -96,7 +96,7 @@ class CustomUserAdmin(UserAdmin):
         ('Login informations', {'classes': ('wide',),
                                 'fields': ('username', 'password1', 'password2',)})
     )
-    # in which attributes an admin can make some search 
+    # in which attributes an admin can make some search
     search_fields = ('username', 'email', 'first_name', 'last_name')
     ordering = ('username', 'last_name', 'email',)
     filter_horizontal = ()

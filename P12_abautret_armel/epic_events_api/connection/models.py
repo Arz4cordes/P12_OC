@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, UserManager
-from django.contrib.auth.models import Group
 
 # Create your models here.
 
@@ -14,10 +13,10 @@ class MyUserManager(UserManager):
                     assignement,
                     password=None):
         my_user = self.model(username=username,
-                          first_name=first_name,
-                          last_name=last_name,
-                          email=email,
-                          assignement=assignement)
+                             first_name=first_name,
+                             last_name=last_name,
+                             email=email,
+                             assignement=assignement)
         my_user.is_superuser = False
         my_user.is_active = True
         if my_user.assignement == 'Management':
@@ -27,15 +26,6 @@ class MyUserManager(UserManager):
             my_user.is_staff = False
         my_user.set_password(password)
         my_user.save(using=self._db)
-        if assignement == 'Commercial':
-            commercial_group, created = Group.objects.get_or_create(name ='Commercial')
-            my_user.groups.add(commercial_group)
-        elif assignement == 'Support':
-            support_group, created = Group.objects.get_or_create(name ='Support')
-            my_user.groups.add(support_group)
-        elif assignement == 'Management':
-            management_group, created = Group.objects.get_or_create(name ='Management')
-            my_user.groups.add(management_group)
         return my_user
 
     def create_superuser(self,
@@ -46,17 +36,15 @@ class MyUserManager(UserManager):
                          assignement,
                          password=None):
         my_user = self.model(username=username,
-                          first_name=first_name,
-                          last_name=last_name,
-                          email=email,
-                          assignement='Management')
+                             first_name=first_name,
+                             last_name=last_name,
+                             email=email,
+                             assignement='Management')
         my_user.is_active = True
         my_user.is_staff = True
         my_user.is_superuser = True
         my_user.set_password(password)
         my_user.save(using=self._db)
-        management_group, created = Group.objects.get_or_create(name ='Management')
-        my_user.groups.add(management_group)
         return my_user
 
 
@@ -78,4 +66,4 @@ class User(AbstractUser):
     REQUIRED_FIELDS = ['first_name', 'last_name', 'email', 'assignement']
 
     def __str__(self):
-        return f"Utilisateur {self.pk}"
+        return f"Utilisateur {self.pk}: {self.first_name} {self.last_name} | groupe {self.assignement}"

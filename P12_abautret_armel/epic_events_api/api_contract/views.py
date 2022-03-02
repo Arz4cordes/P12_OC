@@ -1,7 +1,7 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import permissions
 from api_contract.serializers import ContractListSerializer, ContractDetailSerializer
-                           
+
 from api_contract.models import Contract
 from api_contract.permissions import CanViewContracts
 
@@ -13,9 +13,11 @@ from api_contract.permissions import CanViewContracts
     view one particular contract,
     update one contract
     or delete one contract
-    """
+"""
+
+
 class ContractViewSet(ModelViewSet):
-    
+
     serializer_class = ContractListSerializer
     detail_serializer_class = ContractDetailSerializer
     permission_classes = [permissions.IsAuthenticated,

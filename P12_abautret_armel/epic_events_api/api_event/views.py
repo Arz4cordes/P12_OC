@@ -1,7 +1,7 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import permissions
 from api_event.serializers import EventListSerializer, EventDetailSerializer
-                             
+
 from api_event.models import Event
 from api_event.permissions import CanViewEvents
 
@@ -13,9 +13,11 @@ from api_event.permissions import CanViewEvents
     view one particular event,
     update one event
     or delete one event
-    """
+"""
+
+
 class EventViewSet(ModelViewSet):
-    
+
     serializer_class = EventListSerializer
     detail_serializer_class = EventDetailSerializer
     permission_classes = [permissions.IsAuthenticated,

@@ -1,20 +1,20 @@
 from rest_framework import serializers
 from api_contract.models import Contract
 
+
 class ContractListSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Contract
-        fields = ['pk', 'url', 'creation_date', 'signed', 'client']
-        read_only_fields = ['pk']
+        fields = ['url', 'client', 'creation_date', 'signed']
 
 
 class ContractDetailSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Contract
-        fields = ['pk', 'creation_date', 'update', 'signed', 'signature_date',
-                  'total_amount', 'client']
+        fields = ['pk', 'client', 'creation_date', 'update', 'signed', 'signature_date',
+                  'total_amount']
         read_only_fields = ['pk']
 
     def validate(self, data):

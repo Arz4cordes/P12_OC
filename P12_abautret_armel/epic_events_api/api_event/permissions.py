@@ -24,15 +24,19 @@ LISTE AUTORISATIONS:
         POST: perm#1 (ATTENTION: lié au contrat pour un client dont le commercial est responsable)
         UPDATE: perm#5
         DELETE: perm#4
-        GET 'retrieve': perm#3  
+        GET 'retrieve': perm#3
 """
+
+
 class CanViewEvents(BasePermission):
 
     def has_permission(self, request, view):
-        if request.method in ["GET", "POST"]:
+        if request.method == "GET":
+            return True
+        elif request.method == "POST":
             return request.user.assignement in ['Commercial', 'Management']
         elif request.method == "PUT":
-            return request.user.assignement in ['Commercial', 'Management']
+            return request.user.assignement == ['Support', 'Management']
         else:
             return request.user.assignement == "Management"
 
@@ -48,5 +52,4 @@ class CanViewEvents(BasePermission):
             cond3 = request.user.assignement in roles
             return cond2 or cond3
         else:
-            # FAUT IL METTRE LE CAS POST ICI COMME DANS HAS_PERMISSION ?
             return False

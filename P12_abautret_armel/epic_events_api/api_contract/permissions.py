@@ -25,7 +25,7 @@ LISTE AUTORISATIONS:
         POST: perm#1 (ATTENTION: lié au contrat pour un client dont le commercial est responsable)
         UPDATE: perm#5
         DELETE: perm#4
-        GET 'retrieve': perm#3  
+        GET 'retrieve': perm#3
 """
 
 
@@ -37,7 +37,7 @@ class CanViewContracts(BasePermission):
             return request.user.assignement in roles
         else:
             return request.user.assignement == "Management"
-       
+
     def has_object_permission(self, request, view, obj):
         cond1 = request.user.assignement == "Management"
         if request.method == "DELETE":

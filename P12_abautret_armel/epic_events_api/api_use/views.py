@@ -2,10 +2,10 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework import permissions
 from rest_framework.response import Response
 from api_use.serializers import ClientListSerializer, ClientDetailSerializer
-                             
+
 from api_use.models import Client
 from api_use.permissions import CanViewClients
-# Create your views here.
+
 
 """
     With this Class Based View, you can:
@@ -14,7 +14,9 @@ from api_use.permissions import CanViewClients
     view one particular client,
     update one client
     or delete one client
-    """
+"""
+
+
 class ClientViewSet(ModelViewSet):
 
     serializer_class = ClientListSerializer
