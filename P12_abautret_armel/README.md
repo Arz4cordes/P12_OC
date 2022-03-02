@@ -1,7 +1,7 @@
 API construite avec Django REST Framework, permettant de gérer un fichier client, des contrats associés aux clients, et des événements organisés après la signature des contrats.
 
 Lien github du projet:
-    https://github.com/Arz4cordes/P12_OC
+    https://github.com/Arz4cordes/P12_OC/tree/develop/P12_abautret_armel
 
 
 ##### SOMMAIRE ####
