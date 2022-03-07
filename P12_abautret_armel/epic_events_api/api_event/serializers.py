@@ -8,8 +8,16 @@ class EventListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Event
-        fields = ['url', 'date', 'status', 'contract']
+        fields = ['url', 'responsible', 'date', 'status', 'contract']
         read_only_fields = ['pk', 'status', 'responsible']
+
+
+class EventUpdateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Event
+        fields = ['pk', 'responsible', 'date', 'status', 'comments']
+        read_only_fields = ['pk', 'responsible']
 
 
 class EventDetailSerializer(serializers.ModelSerializer):
@@ -29,12 +37,13 @@ class EventDetailSerializer(serializers.ModelSerializer):
         if not is_it_signed:
             text = 'Le contrat doit être signé avant de créer un événement'
             raise serializers.ValidationError(text)
-        elif current_user != responsible_for_client:
+        elif current_user != responsible_for_client and request.method == 'POST':
             text = 'Vous devez être un responsable du client'
             text += ' correspondant au contrat sélectionné'
             raise serializers.ValidationError(text)
         else:
             return data
+
 
     def to_representation(self, instance):
         result = super(EventDetailSerializer, self).to_representation(instance)

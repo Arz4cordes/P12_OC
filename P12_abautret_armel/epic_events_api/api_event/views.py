@@ -1,6 +1,6 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import permissions
-from api_event.serializers import EventListSerializer, EventDetailSerializer
+from api_event.serializers import EventListSerializer, EventDetailSerializer, EventUpdateSerializer
 
 from api_event.models import Event
 from api_event.permissions import CanViewEvents
@@ -20,6 +20,7 @@ class EventViewSet(ModelViewSet):
 
     serializer_class = EventListSerializer
     detail_serializer_class = EventDetailSerializer
+    update_serializer_class = EventUpdateSerializer
     permission_classes = [permissions.IsAuthenticated,
                           CanViewEvents,
                           ]
@@ -32,7 +33,8 @@ class EventViewSet(ModelViewSet):
         return Event.objects.all()
 
     def get_serializer_class(self):
-        changes_methods = ['POST', 'PUT']
-        if self.action == 'retrieve' or self.request.method in changes_methods:
+        if self.request.method == 'PUT':
+            return self.update_serializer_class
+        elif self.action == 'retrieve' or self.request.method == 'POST':
             return self.detail_serializer_class
         return super().get_serializer_class()

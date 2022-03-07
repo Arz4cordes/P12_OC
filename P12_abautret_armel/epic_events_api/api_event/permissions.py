@@ -36,13 +36,13 @@ class CanViewEvents(BasePermission):
         elif request.method == "POST":
             return request.user.assignement in ['Commercial', 'Management']
         elif request.method == "PUT":
-            return request.user.assignement == ['Support', 'Management']
+            return request.user.assignement in ['Support', 'Management']
         else:
             return request.user.assignement == "Management"
 
     def has_object_permission(self, request, view, obj):
         cond1 = request.user.assignement == "Management"
-        cond2 = obj.responsible == request.user
+        cond2 = obj.responsible.pk == request.user.pk
         if request.method == "DELETE":
             return cond1
         elif request.method == "PUT":
